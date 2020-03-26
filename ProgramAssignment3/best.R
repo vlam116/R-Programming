@@ -30,7 +30,7 @@ best = function(state, outcome){
           bestHospitalHA = subsetHA[which(subsetHA$MRHA==minHA),]
           hospitalNameHA = bestHospitalHA$Hospital.Name
           tiedHA = sort(hospitalNameHA)
-          print(tiedHA)
+          print(tiedHA[1])
       }
       if(outcome == "heart failure"){
          subsetHF = compact[compact$State == state,]
@@ -38,7 +38,16 @@ best = function(state, outcome){
          bestHospitalHF = subsetHF[which(subsetHF$MRHF==minHF),]
          hospitalNameHF = bestHospitalHF$Hospital.Name
          tiedHF = sort(hospitalNameHF)
-         print(tiedHF)
+         print(tiedHF[1])
+      }
+      if(outcome == "pneumonia"){
+         subsetP = compact[compact$State == state,]
+         minP = min(subsetP$MRP)
+         bestHospitalP = subsetP[which(subsetP$MRP==minP),]
+         hospitalNameP = bestHospitalP$Hospital.Name
+         tiedP = sort(hospitalNameP)
+         print(tiedP[1])
       }
 }
+
 
