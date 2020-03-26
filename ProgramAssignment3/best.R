@@ -11,9 +11,9 @@ best = function(state, outcome){
           MRHF = Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure,
           MRP = Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia)
       compact = compact %>% mutate(Hospital.Name = as.character(Hospital.Name),
-                                   MRHA = as.numeric(MRHA),
-                                   MRHF = as.numeric(MRHF),
-                                   MRP = as.numeric(MRP))
+                                   MRHA = suppressWarnings(as.numeric(as.character(MRHA))),
+                                   MRHF = suppressWarnings(as.numeric(as.character(MRHF))),
+                                   MRP = suppressWarnings(as.numeric(as.character(MRP))))
       levState = c(levels(compact$State))
       levOutcomes = c("heart attack","heart failure","pneumonia")
       validState = sum(state == levState)
@@ -26,27 +26,27 @@ best = function(state, outcome){
           }
       if(outcome == "heart attack"){
           subsetHA = compact[compact$State == state,]
-          minHA = min(subsetHA$MRHA)
+          minHA = min(subsetHA$MRHA, na.rm=T)
           bestHospitalHA = subsetHA[which(subsetHA$MRHA==minHA),]
           hospitalNameHA = bestHospitalHA$Hospital.Name
           tiedHA = sort(hospitalNameHA)
           print(tiedHA[1])
       }
       if(outcome == "heart failure"){
-         subsetHF = compact[compact$State == state,]
-         minHF = min(subsetHF$MRHF)
-         bestHospitalHF = subsetHF[which(subsetHF$MRHF==minHF),]
-         hospitalNameHF = bestHospitalHF$Hospital.Name
-         tiedHF = sort(hospitalNameHF)
-         print(tiedHF[1])
+          subsetHF = compact[compact$State == state,]
+          minHF = min(subsetHF$MRHF, na.rm=T)
+          bestHospitalHF = subsetHF[which(subsetHF$MRHF==minHF),]
+          hospitalNameHF = bestHospitalHF$Hospital.Name
+          tiedHF = sort(hospitalNameHF)
+          print(tiedHF[1])
       }
       if(outcome == "pneumonia"){
-         subsetP = compact[compact$State == state,]
-         minP = min(subsetP$MRP)
-         bestHospitalP = subsetP[which(subsetP$MRP==minP),]
-         hospitalNameP = bestHospitalP$Hospital.Name
-         tiedP = sort(hospitalNameP)
-         print(tiedP[1])
+          subsetP = compact[compact$State == state,]
+          minP = min(subsetP$MRP, na.rm =T)
+          bestHospitalP = subsetP[which(subsetP$MRP==minP),]
+          hospitalNameP = bestHospitalP$Hospital.Name
+          tiedP = sort(hospitalNameP)
+          print(tiedP[1])
       }
 }
 
