@@ -23,13 +23,57 @@ rankall = function(outcome, num = "best"){
     
     state = c()
     hospital = c()
+    compactHA = compact[,c(1,2,3)]
+    compactHF = compact[,c(1,2,4)]
+    compactP = compact[,c(1,2,5)]
+    compactHA = na.omit(compactHA)
+    compactHF = na.omit(compactHF)
+    compactP = na.omit(compactP)
+    
     if(outcome == "heart attack"){
-      spl = split(compact, compact$State)
+      spl = split(compactHA, compactHA$State)
       sorted = spl %>% lapply(arrange, MRHA, Hospital.Name)
       hNames = lapply(sorted, function(x) x$Hospital.Name[num])
       sNames = lapply(sorted, function(x) x$State[1])
       hospital = c(hNames)
       state = c(sNames)
-      cbind(hospital, state)
+      all = cbind(hospital, state)
     }
+    
+    if(outcome == "heart failure"){
+      spl = split(compactHF, compactHF$State)
+      sorted = spl %>% lapply(arrange, MRHF, Hospital.Name)
+      hNames = lapply(sorted, function(x) x$Hospital.Name[num])
+      sNames = lapply(sorted, function(x) x$State[1])
+      hospital = c(hNames)
+      state = c(sNames)
+      all = cbind(hospital, state)
+    }
+    
+    if(outcome == "pneumonia"){
+      spl = split(compactP, compactP$State)
+      sorted = spl %>% lapply(arrange, MRP, Hospital.Name)
+      hNames = lapply(sorted, function(x) x$Hospital.Name[num])
+      sNames = lapply(sorted, function(x) x$State[1])
+      hospital = c(hNames)
+      state = c(sNames)
+      all = cbind(hospital, state)
+    }
+    
+    if(num == "best"){
+      hNames = lapply(sorted, function(x) x$Hospital.Name[1])
+      sNames = lapply(sorted, function(x) x$State[1])
+      hospital = c(hNames)
+      state = c(sNames)
+      all = cbind(hospital, state)
+    }
+    
+    if(num == "worst"){
+      hNames = lapply(sorted, function(x) x$Hospital.Name[nrow(x)])
+      sNames = lapply(sorted, function(x) x$State[1])
+      hospital = c(hNames)
+      state = c(sNames)
+      all = cbind(hospital, state)
+    }
+  all
 }
