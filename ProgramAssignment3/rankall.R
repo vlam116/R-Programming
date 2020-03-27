@@ -75,5 +75,5 @@ rankall = function(outcome, num = "best"){
       state = c(sNames)
       all = cbind(hospital, state)
     }
-  all
+  as.data.frame(all)
 }
